@@ -1,3 +1,18 @@
+def getIP():
+    import socket
+    hostname = socket.gethostname()
+    return socket.gethostbyname(hostname)
+
+def restoreNumRebootsFromFile(stateFileName):
+    numRebootsSoFar = 0
+    import os.path
+    if(os.path.isfile(stateFileName)):
+        f = open(stateFileName, "r")
+        numRebootsSoFar = f.readline().split()[0]
+        f.close()
+    return numRebootsSoFar
+
+
 def findNextPrime(n):
     if(n <= 1):
         return 2
@@ -21,6 +36,14 @@ def isPrime(n):
             return False
         i = i+6
     return True
+
+def getCurrNodeIdx(ips,ip):
+    current_node = -1
+    for i in range(len(ips)):
+        if(ips[i] == ip):
+            current_node = i
+            break
+    return current_node
 
 class RandomNodePicker:
     def __init__(self, n):
@@ -55,6 +78,25 @@ class RandomNodePicker:
             powersOfiModPrime = (powersOfiModPrime * i ) % self.prime
         return generatedNums
 
+
+class Algorithm:
+    def __init__(self,ips, n, attackTime, rebootTime, t, nodePicker, stateFileName):
+        self.ip = getIP()
+        self.mIntervals = max(1,attackTime//rebootTime)
+        self.currNodeIdx = getCurrNodeIdx(ips,self.ip)
+        print(self.currNodeIdx)
+        self.numRebootsSoFar = restoreNumRebootsFromFile(stateFileName)
+        print(self.numRebootsSoFar)
+
+
+
+
+ips = ["172.31.8.98", "172.31.37.196", "172.31.35.132", "172.31.45.217"]
+attackTime = 60
+rebootTime = 10
+t = 2
+stateFileName = "reboot_state"
 n = 17
 nodePicker = RandomNodePicker(n)
 print(nodePicker.generators)
+algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
