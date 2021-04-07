@@ -3,15 +3,6 @@ def getIP():
     hostname = socket.gethostname()
     return socket.gethostbyname(hostname)
 
-def restoreNumRebootsFromFile(stateFileName):
-    numRebootsSoFar = 0
-    import os.path
-    if(os.path.isfile(stateFileName)):
-        f = open(stateFileName, "r")
-        numRebootsSoFar = f.readline().split()[0]
-        f.close()
-    return numRebootsSoFar
-
 
 def findNextPrime(n):
     if(n <= 1):
@@ -61,10 +52,11 @@ class RandomNodePicker:
 
 
     def nextNode(self):
-        nodeNum = generators[self.currGeneratorIdx][1][self.nextGeneratedNumIdx]
+        nodeNum = self.generators[self.currGeneratorIdx][1][self.nextGeneratedNumIdx]
+        self.nextGeneratedNumIdx += 1
         if(self.nextGeneratedNumIdx == n):
             self.nextGeneratedNumIdx = 0
-            self.currGeneratorIdx = (self.currGeneratorIdx + 1)% len(generators)
+            self.currGeneratorIdx = (self.currGeneratorIdx + 1)% len(self.generators)
         return nodeNum
 
     def findGeneratedNums(self,i,generatedNums):
@@ -84,19 +76,80 @@ class Algorithm:
         self.ip = getIP()
         self.mIntervals = max(1,attackTime//rebootTime)
         self.currNodeIdx = getCurrNodeIdx(ips,self.ip)
-        print(self.currNodeIdx)
-        self.numRebootsSoFar = restoreNumRebootsFromFile(stateFileName)
-        print(self.numRebootsSoFar)
+        self.t = t
+        self.attackTime = attackTime
+        self.rebootTime = rebootTime
+        self.nodePicker = nodePicker
+        self.n = n 
+        self.stateFileName = stateFileName
+        self.numRebootsSoFar = self.restoreNumRebootsFromFile()
+       
+    def restoreNumRebootsFromFile(self):
+        numRebootsSoFar = 0
+        import os.path
+        if(os.path.isfile(self.stateFileName)):
+            f = open(self.stateFileName, "r")
+            numRebootsSoFar = int(f.readline().split()[0])
+            f.close()
+        print(numRebootsSoFar)
+        return numRebootsSoFar
+
+    def rebootAfterTime(self, timeToReboot):
+        import time
+        self.numRebootsSoFar += 1
+        f = open(self.stateFileName, "w")
+        f.write(str(self.numRebootsSoFar))
+        f.close()
+        #time.sleep()
+        
+
+    def run(self):
+        if ((self.t) < self.mIntervals):
+            print("less than")
+            pass
+        elif((self.t) % self.mIntervals == 0):
+            subsetSize = (self.t)//self.mIntervals
+            print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            N = self.numRebootsSoFar*n
+            while(self.nodePicker.nextNode() != self.currNodeIdx):
+                N += 1
+            print("N",N)
+            if(self.numRebootsSoFar == 0):
+                timeToReboot = N//subsetSize * rebootTime
+            else:
+                M = N - self.n
+                M = (M//subsetSize)*subsetSize + subsetSize
+                N = (N//subsetSize)*subsetSize
+                print(N,M)    
+                timeToReboot = ((N-M)//subsetSize)*self.rebootTime
+            # timeToReboot = (((N//subsetSize) + (N % subsetSize)) - ((M//subsetSize) + (M % subsetSize)) ) * self.rebootTime
+            # if(self.numRebootsSoFar > 0):
+            #     self.nodePicker.currGeneratorIdx = (self.numRebootsSoFar-1) % len(self.nodePicker.generators)
+            #     self.nodePicker.nextGeneratedNumIdx = 0
+            #     while(self.nodePicker.nextNode()!= self.currNodeIdx):
+            #         N = N + 1
+            #     while(self.nodePicker.nextGeneratedNumIdx % subsetSize != 0):
+            #         self.nodePicker.nextNode()
+            # # print("Generator's state: (", self.nodePicker.currGeneratorIdx,", ", self.nodePicker.nextGeneratedNumIdx, ")" )
+            # nodesToWait = 0
+            # while(self.nodePicker.nextNode() != self.currNodeIdx):
+            #     nodesToWait += 1
+            # print("nodesToWait: ", nodesToWait)
+            # timeToReboot = (nodesToWait//subsetSize)*rebootTime
+            print("timeToReboot: ", timeToReboot) 
+            self.rebootAfterTime(timeToReboot)
+                
+        else:
+            pass
 
 
-
-
-ips = ["172.31.8.98", "172.31.37.196", "172.31.35.132", "172.31.45.217"]
+ips = ["172.31.37.196", "172.31.35.132", "172.31.45.217", "172.31.8.98"]
 attackTime = 60
-rebootTime = 10
-t = 2
+rebootTime = 30
+t = 4
 stateFileName = "reboot_state"
-n = 17
+n = 10
 nodePicker = RandomNodePicker(n)
 print(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
+algo.run()
