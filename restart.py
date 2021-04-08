@@ -142,7 +142,8 @@ class Algorithm:
             self.rebootAfterTime(timeToReboot)
                 
         else:
-            pass
+            pass 
+            
 
 
 ips = ["172.31.8.98","172.31.37.196", "172.31.35.132","172.31.45.22", "172.31.45.217"]
