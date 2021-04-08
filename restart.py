@@ -105,8 +105,23 @@ class Algorithm:
 
     def run(self):
         if ((self.t) < self.mIntervals):
-            print("less than")
-            pass
+            subsetSize = self.t
+            print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            N = self.numRebootsSoFar*n
+            while(self.nodePicker.nextNode() != self.currNodeIdx):
+                N += 1
+            print("N",N)
+            if(self.numRebootsSoFar == 0):
+                N = ((N//subsetSize) * self.mIntervals) + (N % subsetSize)
+                timeToReboot = N* rebootTime
+            else:
+                M = N - self.n
+                N = ((N//subsetSize) * self.mIntervals) + (N % subsetSize)
+                M = ((M//subsetSize) * self.mIntervals) + (M % subsetSize)
+                timeToReboot = (N - M-1) * self.rebootTime
+            print("timeToReboot: ", timeToReboot) 
+            self.rebootAfterTime(timeToReboot)
+
         elif((self.t) % self.mIntervals == 0):
             subsetSize = (self.t)//self.mIntervals
             print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
@@ -122,20 +137,7 @@ class Algorithm:
                 N = (N//subsetSize)*subsetSize
                 print(N,M)    
                 timeToReboot = ((N-M)//subsetSize)*self.rebootTime
-            # timeToReboot = (((N//subsetSize) + (N % subsetSize)) - ((M//subsetSize) + (M % subsetSize)) ) * self.rebootTime
-            # if(self.numRebootsSoFar > 0):
-            #     self.nodePicker.currGeneratorIdx = (self.numRebootsSoFar-1) % len(self.nodePicker.generators)
-            #     self.nodePicker.nextGeneratedNumIdx = 0
-            #     while(self.nodePicker.nextNode()!= self.currNodeIdx):
-            #         N = N + 1
-            #     while(self.nodePicker.nextGeneratedNumIdx % subsetSize != 0):
-            #         self.nodePicker.nextNode()
-            # # print("Generator's state: (", self.nodePicker.currGeneratorIdx,", ", self.nodePicker.nextGeneratedNumIdx, ")" )
-            # nodesToWait = 0
-            # while(self.nodePicker.nextNode() != self.currNodeIdx):
-            #     nodesToWait += 1
-            # print("nodesToWait: ", nodesToWait)
-            # timeToReboot = (nodesToWait//subsetSize)*rebootTime
+            
             print("timeToReboot: ", timeToReboot) 
             self.rebootAfterTime(timeToReboot)
                 
@@ -143,9 +145,9 @@ class Algorithm:
             pass
 
 
-ips = ["172.31.37.196", "172.31.35.132", "172.31.45.217", "172.31.8.98"]
-attackTime = 60
-rebootTime = 30
+ips = ["172.31.8.98","172.31.37.196", "172.31.35.132","172.31.45.22", "172.31.45.217"]
+attackTime = 50
+rebootTime = 10
 t = 4
 stateFileName = "reboot_state"
 n = 10
@@ -153,3 +155,31 @@ nodePicker = RandomNodePicker(n)
 print(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
 algo.run()
+
+
+
+
+
+
+
+
+
+
+#case 2
+# timeToReboot = (((N//subsetSize) + (N % subsetSize)) - ((M//subsetSize) + (M % subsetSize)) ) * self.rebootTime
+# if(self.numRebootsSoFar > 0):
+#     self.nodePicker.currGeneratorIdx = (self.numRebootsSoFar-1) % len(self.nodePicker.generators)
+#     self.nodePicker.nextGeneratedNumIdx = 0
+#     while(self.nodePicker.nextNode()!= self.currNodeIdx):
+#         N = N + 1
+#     while(self.nodePicker.nextGeneratedNumIdx % subsetSize != 0):
+#         self.nodePicker.nextNode()
+# # print("Generator's state: (", self.nodePicker.currGeneratorIdx,", ", self.nodePicker.nextGeneratedNumIdx, ")" )
+# nodesToWait = 0
+# while(self.nodePicker.nextNode() != self.currNodeIdx):
+#     nodesToWait += 1
+# print("nodesToWait: ", nodesToWait)
+# timeToReboot = (nodesToWait//subsetSize)*rebootTime
+
+#case 1
+
