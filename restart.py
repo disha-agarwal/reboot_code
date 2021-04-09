@@ -1,6 +1,6 @@
 import logging
 
-logging.basicConfig(filename='app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='/home/ubuntu/reboot_code/app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
 
 
 def getIP():
@@ -159,11 +159,11 @@ class Algorithm:
 
 
 
-ips = ["172.31.42.227", "172.31.36.13", "172.31.46.44"]
+ips = ["172.31.42.227","172.31.36.13","172.31.46.44"]
 attackTime = 480
 rebootTime = 30
 t = 2
-stateFileName = "reboot_state"
+stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = 3
 nodePicker = RandomNodePicker(n)
 # print(nodePicker.generators)
