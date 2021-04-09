@@ -1,4 +1,6 @@
 import logging
+import subprocess
+
 
 logging.basicConfig(filename='/home/ubuntu/reboot_code/app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
 
@@ -107,8 +109,12 @@ class Algorithm:
         f = open(self.stateFileName, "w")
         f.write(str(self.numRebootsSoFar))
         f.close()
-        time.sleep(timeToReboot)
-        os.system("sudo /sbin/reboot")
+        try:
+            process = subprocess.run("/home/ubuntu/redise/dise/bin/test",universal_newlines=True,capture_output=False,timeout=timeToReboot)
+        except subprocess.TimeoutExpired:
+            logging.debug(process.stdout)
+        finally:
+            time.sleep(24)
         
 
     def run(self):
@@ -160,8 +166,8 @@ class Algorithm:
 
 
 ips = ["172.31.42.227","172.31.36.13","172.31.46.44"]
-attackTime = 480
-rebootTime = 30
+attackTime = 60
+rebootTime = 10
 t = 2
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = 3
@@ -169,7 +175,8 @@ nodePicker = RandomNodePicker(n)
 # print(nodePicker.generators)
 logging.debug(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
-algo.run()
+while(1):
+    algo.run()
 
 
 
