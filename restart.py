@@ -97,11 +97,13 @@ class Algorithm:
 
     def rebootAfterTime(self, timeToReboot):
         import time
+        import os
         self.numRebootsSoFar += 1
         f = open(self.stateFileName, "w")
         f.write(str(self.numRebootsSoFar))
         f.close()
-        #time.sleep()
+        time.sleep(timeToReboot)
+        os.system("sudo /sbin/reboot")
         
 
     def run(self):
@@ -146,7 +148,7 @@ class Algorithm:
 
 
 
-ips = ["172.31.8.98","172.31.37.196", "172.31.35.132","172.31.45.22", "172.31.45.217"]
+ips = ["172.31.42.227","172.31.37.209", "172.31.45.68", "172.31.45.106"]
 attackTime = 50
 rebootTime = 10
 t = 4
