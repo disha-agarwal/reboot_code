@@ -148,12 +148,12 @@ class Algorithm:
 
 
 
-ips = ["172.31.42.227","172.31.37.209", "172.31.45.68", "172.31.45.106"]
-attackTime = 50
-rebootTime = 10
-t = 4
+ips = ["172.31.42.227", "172.31.45.68", "172.31.45.106"]
+attackTime = 480
+rebootTime = 30
+t = 2
 stateFileName = "reboot_state"
-n = 10
+n = 3
 nodePicker = RandomNodePicker(n)
 print(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
