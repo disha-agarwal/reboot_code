@@ -1,3 +1,7 @@
+import logging
+
+logging.basicConfig(filename='app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
+
 
 def getIP():
     import socket
@@ -92,7 +96,8 @@ class Algorithm:
             f = open(self.stateFileName, "r")
             numRebootsSoFar = int(f.readline().split()[0])
             f.close()
-        print(numRebootsSoFar)
+        # print(numRebootsSoFar)
+        logging.debug(numRebootsSoFar)
         return numRebootsSoFar
 
     def rebootAfterTime(self, timeToReboot):
@@ -109,11 +114,13 @@ class Algorithm:
     def run(self):
         if ((self.t) < self.mIntervals):
             subsetSize = self.t
-            print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            logging.debug("subset size: " + str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
             while(self.nodePicker.nextNode() != self.currNodeIdx):
                 N += 1
-            print("N",N)
+            # print("N",N)
+            logging.debug("N" + str(N))
             if(self.numRebootsSoFar == 0):
                 N = ((N//subsetSize) * self.mIntervals) + (N % subsetSize)
                 timeToReboot = N* rebootTime
@@ -122,17 +129,20 @@ class Algorithm:
                 N = ((N//subsetSize) * self.mIntervals) + (N % subsetSize)
                 M = ((M//subsetSize) * self.mIntervals) + (M % subsetSize)
                 timeToReboot = (N - M-1) * self.rebootTime
-            print("timeToReboot: ", timeToReboot) 
+            # print("timeToReboot: ", timeToReboot) 
+            logging.debug("timeToReboot: " + str(timeToReboot))
             self.rebootAfterTime(timeToReboot)
 
         else:
             import math
             subsetSize = int(math.ceil(self.t/self.mIntervals))
-            print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            logging.debug("subset size: " +  str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
             while(self.nodePicker.nextNode() != self.currNodeIdx):
                 N += 1
-            print("N",N)
+            # print("N",N)
+            logging.debug("N" + str(N))
             if(self.numRebootsSoFar == 0):
                 timeToReboot = N//subsetSize * rebootTime
             else:
@@ -142,20 +152,22 @@ class Algorithm:
                 print(N,M)    
                 timeToReboot = ((N-M)//subsetSize)*self.rebootTime
             
-            print("timeToReboot: ", timeToReboot) 
+            # print("timeToReboot: ", timeToReboot) 
+            logging.debug("timeToReboot: " +  str(timeToReboot))
             self.rebootAfterTime(timeToReboot)
 
 
 
 
-ips = ["172.31.42.227", "172.31.45.68", "172.31.45.106"]
+ips = ["172.31.42.227", "172.31.36.13", "172.31.46.44"]
 attackTime = 480
 rebootTime = 30
 t = 2
 stateFileName = "reboot_state"
 n = 3
 nodePicker = RandomNodePicker(n)
-print(nodePicker.generators)
+# print(nodePicker.generators)
+logging.debug(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
 algo.run()
 
