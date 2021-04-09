@@ -1,3 +1,4 @@
+
 def getIP():
     import socket
     hostname = socket.gethostname()
@@ -122,8 +123,9 @@ class Algorithm:
             print("timeToReboot: ", timeToReboot) 
             self.rebootAfterTime(timeToReboot)
 
-        elif((self.t) % self.mIntervals == 0):
-            subsetSize = (self.t)//self.mIntervals
+        else:
+            import math
+            subsetSize = int(math.ceil(self.t/self.mIntervals))
             print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
             N = self.numRebootsSoFar*n
             while(self.nodePicker.nextNode() != self.currNodeIdx):
@@ -140,10 +142,8 @@ class Algorithm:
             
             print("timeToReboot: ", timeToReboot) 
             self.rebootAfterTime(timeToReboot)
-                
-        else:
-            pass 
-            
+
+
 
 
 ips = ["172.31.8.98","172.31.37.196", "172.31.35.132","172.31.45.22", "172.31.45.217"]
