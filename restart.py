@@ -115,7 +115,7 @@ class Algorithm:
             # logging.debug(process.stdout)
             print("timeout done")
         finally:
-            time.sleep(30)
+            time.sleep(20)
         
 
     def run(self):
@@ -167,7 +167,7 @@ class Algorithm:
 
 
 ips = ["172.31.42.227","172.31.36.13","172.31.46.44"]
-attackTime = 480
+attackTime = 60
 rebootTime = 30
 t = 2
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
