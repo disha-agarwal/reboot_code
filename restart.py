@@ -171,7 +171,7 @@ attackTime = 60
 rebootTime = 30
 t = 2
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
-n = 3
+n = len(ips)
 nodePicker = RandomNodePicker(n)
 # print(nodePicker.generators)
 logging.debug(nodePicker.generators)
