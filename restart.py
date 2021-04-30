@@ -139,7 +139,7 @@ class Algorithm:
                 timeToReboot = (N - M-1) * self.rebootTime
             # print("timeToReboot: ", timeToReboot) 
             logging.debug("timeToReboot: " + str(timeToReboot))
-            if(timeToReboot>0):
+            if(self.numRebootsSoFar>0):
                 timeToReboot += 10
             self.rebootAfterTime(timeToReboot)
 
@@ -165,6 +165,8 @@ class Algorithm:
             
             # print("timeToReboot: ", timeToReboot) 
             logging.debug("timeToReboot: " +  str(timeToReboot))
+            if(self.numRebootsSoFar>0):
+                timeToReboot += 10
             self.rebootAfterTime(timeToReboot)
 
 
