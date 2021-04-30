@@ -167,7 +167,7 @@ class Algorithm:
 
 
 ips = ["172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44","172.31.38.184", "172.31.37.243"]
-attackTime = 90
+attackTime = 120
 rebootTime = 30
 t = 4
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
