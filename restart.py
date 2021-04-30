@@ -145,6 +145,7 @@ class Algorithm:
             import math
             subsetSize = int(math.ceil(self.t/self.mIntervals))
             # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            logging.debug("node number: "  + str(self.currNodeIdx))
             logging.debug("subset size: " +  str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
             while(self.nodePicker.nextNode() != self.currNodeIdx):
