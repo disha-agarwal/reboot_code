@@ -138,11 +138,11 @@ class Algorithm:
                 timeToReboot = (N - M-1) * self.rebootTime
             # print("timeToReboot: ", timeToReboot) 
             logging.debug("timeToReboot: " + str(timeToReboot))
-            self.rebootAfterTime(timeToReboot+10)
+            self.rebootAfterTime(timeToReboot)
 
         else:
             import math
-            subsetSize = int(math.floor(self.t/self.mIntervals))
+            subsetSize = int(math.ceil(self.t/self.mIntervals))
             # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
             logging.debug("subset size: " +  str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
@@ -169,7 +169,7 @@ class Algorithm:
 ips = ["172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44","172.31.38.184", "172.31.37.243"]
 attackTime = 45
 rebootTime = 30
-t = 2
+t = 3
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = len(ips)
 nodePicker = RandomNodePicker(n)
