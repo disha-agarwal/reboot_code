@@ -142,7 +142,7 @@ class Algorithm:
 
         else:
             import math
-            subsetSize = int(math.ceil(self.t/self.mIntervals))
+            subsetSize = int(math.floor(self.t/self.mIntervals))
             # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
             logging.debug("subset size: " +  str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
