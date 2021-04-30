@@ -122,6 +122,7 @@ class Algorithm:
         if ((self.t) < self.mIntervals):
             subsetSize = self.t
             # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            logging.debug("node number: "  + str(self.currNodeIdx))
             logging.debug("subset size: " + str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
             while(self.nodePicker.nextNode() != self.currNodeIdx):
@@ -173,7 +174,6 @@ t = 3
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = len(ips)
 nodePicker = RandomNodePicker(n)
-print(getIP())
 # print(nodePicker.generators)
 logging.debug(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
