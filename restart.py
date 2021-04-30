@@ -138,7 +138,7 @@ class Algorithm:
                 timeToReboot = (N - M-1) * self.rebootTime
             # print("timeToReboot: ", timeToReboot) 
             logging.debug("timeToReboot: " + str(timeToReboot))
-            self.rebootAfterTime(timeToReboot)
+            self.rebootAfterTime(timeToReboot+10)
 
         else:
             import math
@@ -173,6 +173,7 @@ t = 4
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = len(ips)
 nodePicker = RandomNodePicker(n)
+print(getIP())
 # print(nodePicker.generators)
 logging.debug(nodePicker.generators)
 algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
