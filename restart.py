@@ -173,9 +173,9 @@ class Algorithm:
 
 
 ips = ["10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135", "10.0.0.198", "10.0.0.231"]
-attackTime = 45
+attackTime = 60
 rebootTime = 30
-t = 2
+t = 3
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = len(ips)
 nodePicker = RandomNodePicker(n)
