@@ -172,10 +172,10 @@ class Algorithm:
 
 
 
-ips = ["10.0.0.228","10.0.0.6", "10.0.0.204", "10.0.0.135", "10.0.0.198", "10.0.0.231"]
-attackTime = 120
+ips = ["172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"]
+attackTime = 60
 rebootTime = 30
-t = 4
+t = 2
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = len(ips)
 nodePicker = RandomNodePicker(n)
