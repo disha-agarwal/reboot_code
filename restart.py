@@ -112,7 +112,7 @@ class Algorithm:
         try:
             process = subprocess.run("/home/ubuntu/redise/dise/bin/test",universal_newlines=True,capture_output=False,timeout=timeToReboot)
         except subprocess.TimeoutExpired:
-            # logging.debug(process.stdout)
+            logging.debug("timeout done")
             print("timeout done")
         finally:
             time.sleep(20)
@@ -121,7 +121,7 @@ class Algorithm:
     def run(self):
         if ((self.t) < self.mIntervals):
             subsetSize = self.t
-            # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
+            print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
             logging.debug("node number: "  + str(self.currNodeIdx))
             logging.debug("subset size: " + str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
