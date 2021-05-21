@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import sys
 
 
 logging.basicConfig(filename='/home/ubuntu/reboot_code/app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
