@@ -1,10 +1,11 @@
 import logging
 import subprocess
 import sys
+from simpletcp.clientsocket import ClientSocket
 
 
 logging.basicConfig(filename='/home/ubuntu/reboot_code/app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
-
+s1 = ClientSocket("172.31.37.209", 5000, single_use=False)
 
 def getIP():
     import socket
@@ -112,12 +113,16 @@ class Algorithm:
         f.write(str(self.numRebootsSoFar))
         f.close()
         try:
+            response = s1.send("True")
+            print("node index: " +  str(self.currNodeIdx) + " response: "+ str(response.decode()))
             process = subprocess.run("/home/ubuntu/redise/dise/bin/test",universal_newlines=True,capture_output=False,timeout=timeToReboot)
             sys.stdout.flush()
         except subprocess.TimeoutExpired:
             logging.debug("timeout done")
             print("timeout done")
         finally:
+            response = s1.send("False")
+            print("node index: " +  str(self.currNodeIdx) + " response: "+ str(response.decode()))
             time.sleep(20)
         
 
@@ -171,7 +176,8 @@ class Algorithm:
             logging.debug("timeToReboot: " +  str(timeToReboot))
             if(self.numRebootsSoFar>0):
                 timeToReboot += 10
-            self.rebootAfterTime(timeToReboot)
+            # self.rebootAfterTime(timeToReboot)
+            self.rebootAfterTime(5)
 
 
 
