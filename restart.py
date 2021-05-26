@@ -176,8 +176,7 @@ class Algorithm:
             logging.debug("timeToReboot: " +  str(timeToReboot))
             if(self.numRebootsSoFar>0):
                 timeToReboot += 10
-            # self.rebootAfterTime(timeToReboot)
-            self.rebootAfterTime(5)
+            self.rebootAfterTime(timeToReboot)
 
 
 
