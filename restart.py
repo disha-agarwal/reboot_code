@@ -5,12 +5,13 @@ from simpletcp.clientsocket import ClientSocket
 
 
 logging.basicConfig(filename='/home/ubuntu/reboot_code/app.log', filemode='w', level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
-s1 = ClientSocket("172.31.37.209", 5000, single_use=False)
 
 def getIP():
     import socket
     hostname = socket.gethostname()
     return socket.gethostbyname(hostname)
+
+s1 = ClientSocket(getIP(), 5000, single_use=False)
 
 
 def findNextPrime(n):
