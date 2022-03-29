@@ -111,6 +111,9 @@ class Algorithm:
         f = open(self.stateFileName, "w")
         f.write(str(self.numRebootsSoFar))
         f.close()
+        # TODO: Add a file sqlite.db Node with index=0, ip=x is going down.
+        # Reboot logic
+        # timetoReboot is the time after which the node is scheduled to be rebooted. 
         try:
             process = subprocess.run("/home/ubuntu/redise/dise/bin/test",universal_newlines=True,capture_output=False,timeout=timeToReboot)
             sys.stdout.flush()
@@ -175,8 +178,9 @@ class Algorithm:
 
 
 
-
+# TODO: Argument as input for list of ips, attack time, reboot time, path_to_state_file_name, path_to_schedule
 ips = ["172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"]
+
 attackTime = 60
 rebootTime = 30
 t = 2
