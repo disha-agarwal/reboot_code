@@ -80,17 +80,18 @@ class RandomNodePicker:
 
 
 class Algorithm:
-    def __init__(self,ips, n, attackTime, rebootTime, t, nodePicker, stateFileName):
-        self.ip = getIP()
+    def __init__(self,ips, n, attackTime, rebootTime, t, nodePicker, stateFileName, currNodeIdx):
+#         self.ip = getIP()
         self.mIntervals = max(1,attackTime//rebootTime)
-        self.currNodeIdx = getCurrNodeIdx(ips,self.ip)
+#         self.currNodeIdx = getCurrNodeIdx(ips,self.ip)
+        self.currNodeIdx = currNodeIdx
         self.t = t
         self.attackTime = attackTime
         self.rebootTime = rebootTime
         self.nodePicker = nodePicker
         self.n = n 
         self.stateFileName = stateFileName
-        self.numRebootsSoFar = self.restoreNumRebootsFromFile()
+        self.numRebootsSoFar = 0
        
     def restoreNumRebootsFromFile(self):
         numRebootsSoFar = 0
@@ -124,15 +125,15 @@ class Algorithm:
             time.sleep(20)
         
 
-    def run(self):
+    def run(self, currNodeIdx):
         if ((self.t) < self.mIntervals):
             subsetSize = self.t
             # print("here")
             # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
-            logging.debug("node number: "  + str(self.currNodeIdx))
+            logging.debug("node number: "  + str(currNodeIdx))
             logging.debug("subset size: " + str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
-            while(self.nodePicker.nextNode() != self.currNodeIdx):
+            while(self.nodePicker.nextNode() != currNodeIdx):
                 N += 1
             # print("N",N)
             logging.debug("N" + str(N))
@@ -148,16 +149,17 @@ class Algorithm:
             logging.debug("timeToReboot: " + str(timeToReboot))
             if(self.numRebootsSoFar>0):
                 timeToReboot += 10
-            self.rebootAfterTime(timeToReboot)
+              self.numRebootsSoFar += 1
+#             self.rebootAfterTime(timeToReboot)
 
         else:
             import math
             subsetSize = int(math.ceil(self.t/self.mIntervals))
             # print("subset size: ", subsetSize, " mIntervals:",self.mIntervals)
-            logging.debug("node number: "  + str(self.currNodeIdx))
+            logging.debug("node number: "  + str(currNodeIdx))
             logging.debug("subset size: " +  str(subsetSize) + " mIntervals:" + str(self.mIntervals))
             N = self.numRebootsSoFar*n
-            while(self.nodePicker.nextNode() != self.currNodeIdx):
+            while(self.nodePicker.nextNode() != currNodeIdx):
                 N += 1
             # print("N",N)
             logging.debug("N" + str(N))
@@ -174,27 +176,36 @@ class Algorithm:
             logging.debug("timeToReboot: " +  str(timeToReboot))
             if(self.numRebootsSoFar>0):
                 timeToReboot += 10
-            self.rebootAfterTime(timeToReboot)
+            self.numRebootsSoFar += 1
+#             self.rebootAfterTime(timeToReboot)
 
 
 
 # TODO: Argument as input for list of ips, attack time, reboot time, path_to_state_file_name, path_to_schedule
-ips = ["172.31.42.227","172.31.37.209","172.31.36.13","172.31.46.44"]
+ips = [i for i in range(0,6)]
 
 attackTime = 60
 rebootTime = 30
-t = 2
+t = 3
 stateFileName = "/home/ubuntu/reboot_code/reboot_state"
 n = len(ips)
 nodePicker = RandomNodePicker(n)
 # print(nodePicker.generators)
 logging.debug(nodePicker.generators)
-algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
-while(1):
-    algo.run()
+# algo = Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName)
+# while(1):
+#     algo.run()
 
+obj_list= []
+for i in ips:
+    obj_list.append(Algorithm(ips,n,attackTime,rebootTime,t,nodePicker,stateFileName,i))
+    for i in range(5):
+        obj_list[i].run(i)
+    
 
-
+# a= m*r , we divide our time into slots
+# given t=3, and n=6, m=1, r=30, a=30
+# 60 40 30 
 
 
 
